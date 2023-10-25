@@ -1,0 +1,4 @@
+#! /usr/bin/env bash
+
+# TODO get address from environment
+curl --include --request POST "http://127.0.0.1:1337/poll-options/$1/votes"

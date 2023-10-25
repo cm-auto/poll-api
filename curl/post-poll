@@ -1,0 +1,4 @@
+#! /usr/bin/env bash
+
+# TODO get address from environment
+curl --include -H "Content-Type: application/json" --request POST -d '{"title": "test", "pollType": "single", "pollOptions": ["a", "b", "c"]}' "http://127.0.0.1:1337/polls"

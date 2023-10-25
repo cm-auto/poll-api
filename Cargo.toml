@@ -1,0 +1,22 @@
+[package]
+name = "poll-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-cors = "0.6.4"
+actix-web = "4.3.1"
+env_logger = "0.10.0"
+sqlx = { version = "0.7.1", features = [
+    "postgres",
+    "runtime-tokio-native-tls",
+    "chrono",
+    "ipnetwork",
+] }
+dotenvy = "0.15.7"
+chrono = { version = "0.4.26", features = ["serde"] }
+serde = { version = "1.0.188", features = ["derive"] }
+log = "0.4.20"
+plotters = "0.3.5"
+anyhow = "1.0.75"
+actix-rt = "2.9.0"
