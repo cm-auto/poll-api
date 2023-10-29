@@ -1,7 +1,7 @@
 use serde::{ser::SerializeStruct, Deserialize, Serialize, Serializer};
 use sqlx::types::ipnetwork::IpNetwork;
 
-#[derive(Debug, sqlx::Type, Serialize, Deserialize)]
+#[derive(Debug, sqlx::Type, Serialize, Deserialize, PartialEq)]
 #[sqlx(type_name = "poll_type", rename_all = "snake_case")]
 #[serde(rename_all = "camelCase")]
 pub enum PollType {

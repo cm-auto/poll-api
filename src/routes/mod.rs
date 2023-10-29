@@ -1,4 +1,6 @@
-use actix_web::HttpResponse;
+use std::sync::OnceLock;
+
+use actix_web::{HttpRequest, HttpResponse};
 
 macro_rules! unwrap_or_log_and_internal_server_error_response {
     ($result:expr, $message:expr) => {
@@ -24,14 +26,16 @@ struct ApiIndexResponseData {
     poll_options: String,
 }
 
-pub async fn get_api_index() -> HttpResponse {
-    // These two can't be consts,
-    // since the base url and the api prefix would have to be set
-    // from the env or program args.
-    // TODO: however we should make use of memoization
-    // TODO: actually use the values passed to the program
-    HttpResponse::Ok().json(ApiIndexResponseData {
-        polls: "http://127.0.0.1:1337/polls".to_string(),
-        poll_options: "http://127.0.0.1:1337/poll-options".to_string(),
-    })
+static ENDPOINTS: OnceLock<ApiIndexResponseData> = OnceLock::new();
+
+pub async fn get_api_index(request: HttpRequest) -> HttpResponse {
+    let endpoints = ENDPOINTS.get_or_init(move || {
+        let port = request.app_config().local_addr().port();
+        let origin = format!("http://{}:{}/", "127.0.0.1", port);
+        ApiIndexResponseData {
+            polls: format!("{}polls", origin),
+            poll_options: format!("{}poll-options", origin),
+        }
+    });
+    HttpResponse::Ok().json(endpoints)
 }
